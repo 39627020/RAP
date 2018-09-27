@@ -4,4 +4,3 @@ MAINTAINER zedong.jiang zedong.jiang@sysssc.com
 
 VOLUME /tmp
 
-COPY target/ROOT.war /usr/local/tomcat/webapps

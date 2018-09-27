@@ -1,4 +1,4 @@
-version: '3'
+version: '2'
 services:
   redisserver:
     container_name: redisserver
@@ -40,6 +40,8 @@ services:
       dockerfile: rapweb-dockerfile
     ports:
       - "9000:8080"
+    volumes:
+      - ./webapps:/usr/local/tomcat/webapps
     expose:
       - "8080"
     networks:
