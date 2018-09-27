@@ -1,17 +1,19 @@
 version: '2'
 services:
-  redisserver:
-    container_name: redisserver
-    image: redis
+  rap_redis:
+    container_name: rap_redis
+    build: 
+      context: .
+      dockerfile: redis-dockerfile
     ports:
       - "6379:6379"
     expose:
       - "6379"
     networks:
-      - rap-db
+      - rap-network
     
-  mysqlserver:
-    container_name: mysqlserver
+  rap_mysql:
+    container_name: rap_mysql
     build:
       context: .
       dockerfile: mysql-dockerfile
@@ -24,7 +26,7 @@ services:
     expose:
       - "3306"
     networks:
-      - rap-db
+      - rap-network
     command: [
           'mysqld',
           '--innodb-buffer-pool-size=20M',
@@ -33,8 +35,8 @@ services:
           '--default-time-zone=+8:00',
           '--lower-case-table-names=1'
         ]            
-  rapweb:
-    container_name: rapweb
+  rap_web:
+    container_name: rap_web
     build:
       context: .
       dockerfile: rapweb-dockerfile
@@ -45,10 +47,10 @@ services:
     expose:
       - "8080"
     networks:
-      - rap-db
+      - rap-network
     depends_on:
-      - mysqlserver
-      - redisserver
+      - rap_mysql
+      - rap_redis
 networks:
-  rap-db:
+  rap-network:
     driver: bridge
