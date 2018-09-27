@@ -1,0 +1,52 @@
+version: '3'
+services:
+  redisserver:
+    container_name: redisserver
+    image: redis
+    ports:
+      - "6379:6379"
+    expose:
+      - "6379"
+    networks:
+      - rap-db
+    
+  mysqlserver:
+    container_name: mysqlserver
+    build:
+      context: .
+      dockerfile: mysql-dockerfile
+    environment:
+      - "MYSQL_ROOT_PASSWORD=1qazzaq1"
+      - "MYSQL_DATABASE=rap_db"
+      - "MYSQL_ROOT_HOST=%"
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    networks:
+      - rap-db
+    command: [
+          'mysqld',
+          '--innodb-buffer-pool-size=20M',
+          '--character-set-server=utf8mb4',
+          '--collation-server=utf8mb4_bin',
+          '--default-time-zone=+8:00',
+          '--lower-case-table-names=1'
+        ]            
+  rapweb:
+    container_name: rapweb
+    build:
+      context: .
+      dockerfile: rapweb-dockerfile
+    ports:
+      - "9000:8080"
+    expose:
+      - "8080"
+    networks:
+      - rap-db
+    depends_on:
+      - mysqlserver
+      - redisserver
+networks:
+  rap-db:
+    driver: bridge

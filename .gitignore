@@ -3,6 +3,9 @@ out
 target
 build
 .idea
+.project
+.classpath
+.settings/*
 *.iml
 .DS_Store
 bak

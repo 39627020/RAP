@@ -1,0 +1,5 @@
+FROM mysql:5.7.17
+
+MAINTAINER zedong.jiang zedong.jiang@sysssc.com
+ 
+ADD init.sql /docker-entrypoint-initdb.d/
